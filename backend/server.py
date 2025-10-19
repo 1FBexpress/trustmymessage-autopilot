@@ -94,6 +94,13 @@ async def analyze_message(request: AnalyzeRequest):
         if not api_key:
             raise HTTPException(status_code=500, detail="API key not configured")
         
+        # Ensure imageBase64 is in proper format
+        image_base64 = request.imageBase64
+        # If it doesn't start with data:image, add the prefix
+        if not image_base64.startswith('data:image'):
+            # Assume it's PNG if no format specified
+            image_base64 = f"data:image/png;base64,{image_base64}"
+        
         # Create LLM chat instance with gpt-4o-mini
         chat = LlmChat(
             api_key=api_key,
@@ -115,7 +122,7 @@ Return JSON ONLY with:
         ).with_model("openai", "gpt-4o-mini")
         
         # Create image content from base64
-        image_content = ImageContent(image_base64=request.imageBase64)
+        image_content = ImageContent(image_base64=image_base64)
         
         # Create user message with image
         user_message = UserMessage(
