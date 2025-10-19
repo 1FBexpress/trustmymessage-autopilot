@@ -642,9 +642,19 @@
 </script>
 
 <script>
-/* TrustMyMsg: force all scans through your Worker + normalize responses */
 (() => {
   const WORKER_URL = 'https://odd-rain-b411.c44herbert.workers.dev/';
+
+  function getImageBase64() {
+    // Prefer global if present
+    if (window.currentImageBase64) return window.currentImageBase64;
+    // Else read from the preview <img>
+    const img = document.getElementById('previewImage');
+    if (img && typeof img.src === 'string' && img.src.startsWith('data:image')) {
+      return img.src;
+    }
+    return null;
+  }
 
   async function callWorker(imageBase64) {
     const res = await fetch(WORKER_URL, {
@@ -652,25 +662,21 @@
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ imageBase64 })
     });
-
     const text = await res.text();
     let data;
-    try { data = JSON.parse(text); }
-    catch { throw new Error('Worker returned non-JSON: ' + text.slice(0, 200)); }
+    try { data = JSON.parse(text); } catch {
+      throw new Error('Worker returned non-JSON: ' + text.slice(0,200));
+    }
 
-    // If the Worker returned an OpenAI envelope, unwrap it
+    // If Worker returned an OpenAI envelope, unwrap it
     if (data?.choices?.[0]?.message?.content) {
       let content = data.choices[0].message.content.trim();
       if (content.startsWith('```')) {
         content = content.replace(/^```json/i, '').replace(/^```/, '').replace(/```$/, '').trim();
       }
-      try { data = JSON.parse(content); } catch {} // if parse fails, fall back to raw
+      try { data = JSON.parse(content); } catch {}
     }
-
-    // Accept either a normalized analysis object, or pass through warning/error
     if (data.error) throw new Error(data.error);
-    if (data.warning) return { explanation: data.warning, recommendation: 'Try again with a clearer screenshot', redFlags: [], moneyRequest:false, loveBombing:false, urgency:false, avoidance:false, inconsistencies:[], commonPhrasesCount:0 };
-
     return data;
   }
 
@@ -681,17 +687,19 @@
     const errMsg = document.getElementById('errorMessage');
 
     try {
-      if (!window.currentImageBase64) throw new Error('Please select an image first.');
+      const img64 = getImageBase64();
+      if (!img64) throw new Error('Please select an image first.');
+
       errBox?.classList.add('hidden');
       loading?.classList.remove('hidden');
       if (btn) btn.disabled = true;
 
-      const result = await callWorker(window.currentImageBase64);
+      const result = await callWorker(img64);
 
-      // hand to the page's existing renderer if present
-      if (window.displayResults) {
+      if (typeof window.displayResults === 'function') {
         window.displayResults(result);
       } else {
+        // Fallback if the page function doesn't exist
         console.log('Analysis result:', result);
         throw new Error('displayResults() not found on page.');
       }
@@ -705,14 +713,14 @@
     }
   }
 
-  // Wire the Analyze button even if the original script fails
+  // Wire the Analyze button
   const btn = document.getElementById('analyzeBtn');
   if (btn && !btn._trustWired) {
     btn._trustWired = true;
     btn.addEventListener('click', runAnalysis);
   }
 
-  // Make it callable from elsewhere if needed
+  // Optional: expose a manual trigger
   window.__trustAnalyzeNow = runAnalysis;
 })();
 </script>
