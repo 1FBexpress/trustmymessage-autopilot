@@ -18,7 +18,6 @@ const Scanner = () => {
       setError(null);
       setResult(null);
       
-      // Create preview
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewUrl(reader.result);
@@ -61,9 +60,9 @@ const Scanner = () => {
   };
 
   const getRiskLevel = (score) => {
-    if (score <= 30) return { level: 'SAFE', color: '#10b981', bgColor: 'rgba(16, 185, 129, 0.1)' };
-    if (score <= 70) return { level: 'CAUTION', color: '#f59e0b', bgColor: 'rgba(245, 158, 11, 0.1)' };
-    return { level: 'DANGER', color: '#ef4444', bgColor: 'rgba(239, 68, 68, 0.1)' };
+    if (score <= 30) return { level: 'SAFE', color: '#10B981', bgColor: 'rgba(16, 185, 129, 0.15)', glow: '0 0 30px rgba(16, 185, 129, 0.5)' };
+    if (score <= 70) return { level: 'CAUTION', color: '#F59E0B', bgColor: 'rgba(245, 158, 11, 0.15)', glow: '0 0 30px rgba(245, 158, 11, 0.5)' };
+    return { level: 'DANGER', color: '#EF4444', bgColor: 'rgba(239, 68, 68, 0.15)', glow: '0 0 30px rgba(239, 68, 68, 0.5)' };
   };
 
   const handleAnalyze = async () => {
@@ -77,7 +76,6 @@ const Scanner = () => {
     setResult(null);
 
     try {
-      // Convert file to base64
       const reader = new FileReader();
       reader.onloadend = async () => {
         const base64String = reader.result;
@@ -114,22 +112,23 @@ const Scanner = () => {
     <div className="w-full">
       {/* Upload Area */}
       <div 
-        className="border-2 border-dashed rounded-xl p-8 text-center transition-all"
+        className="border-2 border-dashed rounded-xl p-8 text-center transition-all glow-box"
         style={{ 
-          borderColor: previewUrl ? '#10b981' : 'rgba(0, 0, 0, 0.1)',
-          backgroundColor: previewUrl ? 'rgba(16, 185, 129, 0.05)' : 'rgba(0, 0, 0, 0.02)'
+          borderColor: previewUrl ? '#10B981' : 'rgba(59, 130, 246, 0.5)',
+          backgroundColor: previewUrl ? 'rgba(16, 185, 129, 0.05)' : '#1E293B',
+          boxShadow: previewUrl ? '0 0 30px rgba(16, 185, 129, 0.3)' : '0 0 20px rgba(59, 130, 246, 0.2)'
         }}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
       >
         {!previewUrl ? (
           <div className="flex flex-col items-center gap-4">
-            <Upload className="w-12 h-12" style={{ color: '#2563eb', strokeWidth: 1.5 }} />
+            <Upload className="w-12 h-12" style={{ color: '#3B82F6', strokeWidth: 1.5 }} />
             <div>
-              <p className="body-large mb-2" style={{ color: 'rgb(14, 15, 12)' }}>
+              <p className="body-large mb-2" style={{ color: '#F1F5F9' }}>
                 Drop your screenshot here
               </p>
-              <p className="body-small" style={{ color: 'rgb(131, 146, 140)' }}>
+              <p className="body-small" style={{ color: '#94A3B8' }}>
                 or click to browse
               </p>
             </div>
@@ -149,7 +148,8 @@ const Scanner = () => {
             <img 
               src={previewUrl} 
               alt="Preview" 
-              className="max-h-64 rounded-lg shadow-md"
+              className="max-h-64 rounded-lg"
+              style={{ border: '2px solid #10B981', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)' }}
             />
             <div className="flex gap-3">
               <button 
@@ -179,10 +179,10 @@ const Scanner = () => {
 
       {/* Error Display */}
       {error && (
-        <div className="mt-6 product-card" style={{ borderColor: '#ef4444', backgroundColor: 'rgba(239, 68, 68, 0.05)' }}>
+        <div className="mt-6 cyber-panel" style={{ borderColor: '#EF4444', backgroundColor: 'rgba(239, 68, 68, 0.1)', borderLeft: '4px solid #EF4444' }}>
           <div className="flex items-start gap-3">
-            <XCircle className="w-5 h-5 flex-shrink-0 mt-1" style={{ color: '#ef4444', strokeWidth: 2 }} />
-            <p className="body-medium" style={{ color: '#ef4444' }}>{error}</p>
+            <XCircle className="w-5 h-5 flex-shrink-0 mt-1" style={{ color: '#EF4444', strokeWidth: 2 }} />
+            <p className="body-medium" style={{ color: '#FCA5A5' }}>{error}</p>
           </div>
         </div>
       )}
@@ -191,11 +191,13 @@ const Scanner = () => {
       {result && (
         <div className="mt-8 space-y-6">
           {/* Risk Score Card */}
-          <div className="product-card text-center" style={{ 
+          <div className="cyber-panel text-center" style={{ 
             borderColor: result.riskLevel.color,
-            backgroundColor: result.riskLevel.bgColor
+            backgroundColor: result.riskLevel.bgColor,
+            boxShadow: result.riskLevel.glow,
+            borderWidth: '2px'
           }}>
-            <div className="flex flex-col items-center gap-4">
+            <div className="flex flex-col items-center gap-4 py-6">
               {result.riskLevel.level === 'SAFE' && (
                 <CheckCircle className="w-16 h-16" style={{ color: result.riskLevel.color, strokeWidth: 1.5 }} />
               )}
@@ -207,13 +209,13 @@ const Scanner = () => {
               )}
               
               <div>
-                <div className="text-6xl font-bold mb-2" style={{ color: result.riskLevel.color }}>
+                <div className="text-7xl font-bold mb-2" style={{ color: result.riskLevel.color, fontFamily: 'Inter' }}>
                   {result.riskScore}
                 </div>
-                <div className="text-2xl font-semibold mb-1" style={{ color: result.riskLevel.color }}>
+                <div className="text-3xl font-bold mb-2" style={{ color: result.riskLevel.color }}>
                   {result.riskLevel.level}
                 </div>
-                <p className="body-small" style={{ color: 'rgb(131, 146, 140)' }}>
+                <p className="body-small" style={{ color: '#94A3B8' }}>
                   Risk Score (0-100)
                 </p>
               </div>
@@ -221,22 +223,22 @@ const Scanner = () => {
           </div>
 
           {/* Red Flags */}
-          <div className="product-card">
+          <div className="cyber-panel">
             <h3 className="heading-3 mb-4 flex items-center gap-2">
-              <Shield className="w-5 h-5" style={{ color: '#2563eb', strokeWidth: 1.5 }} />
+              <Shield className="w-5 h-5" style={{ color: '#3B82F6', strokeWidth: 1.5 }} />
               Detected Red Flags
             </h3>
             {result.redFlags && result.redFlags.length > 0 ? (
-              <ul className="space-y-2">
+              <ul className="space-y-3">
                 {result.redFlags.map((flag, index) => (
-                  <li key={index} className="flex items-start gap-2">
-                    <span style={{ color: '#ef4444', fontSize: '1.2rem' }}>•</span>
-                    <span className="body-medium" style={{ color: 'rgb(14, 15, 12)' }}>{flag}</span>
+                  <li key={index} className="flex items-start gap-3 p-3 rounded" style={{ background: 'rgba(239, 68, 68, 0.1)' }}>
+                    <span style={{ color: '#EF4444', fontSize: '1.5rem', lineHeight: '1' }}>•</span>
+                    <span className="body-medium" style={{ color: '#FCA5A5' }}>{flag}</span>
                   </li>
                 ))}
               </ul>
             ) : (
-              <p className="body-medium" style={{ color: '#10b981' }}>
+              <p className="body-medium" style={{ color: '#10B981' }}>
                 ✓ No major red flags detected
               </p>
             )}
@@ -244,13 +246,13 @@ const Scanner = () => {
 
           {/* Inconsistencies */}
           {result.inconsistencies && result.inconsistencies.length > 0 && (
-            <div className="product-card">
+            <div className="cyber-panel">
               <h3 className="heading-3 mb-4">Inconsistencies Found</h3>
               <ul className="space-y-2">
                 {result.inconsistencies.map((item, index) => (
-                  <li key={index} className="flex items-start gap-2">
-                    <span style={{ color: '#f59e0b', fontSize: '1.2rem' }}>•</span>
-                    <span className="body-medium" style={{ color: 'rgb(14, 15, 12)' }}>{item}</span>
+                  <li key={index} className="flex items-start gap-3 p-3 rounded" style={{ background: 'rgba(245, 158, 11, 0.1)' }}>
+                    <span style={{ color: '#F59E0B', fontSize: '1.5rem', lineHeight: '1' }}>•</span>
+                    <span className="body-medium" style={{ color: '#FCD34D' }}>{item}</span>
                   </li>
                 ))}
               </ul>
@@ -258,14 +260,14 @@ const Scanner = () => {
           )}
 
           {/* Explanation */}
-          <div className="product-card">
+          <div className="cyber-panel">
             <h3 className="heading-3 mb-4">Analysis</h3>
-            <p className="body-medium mb-4" style={{ color: 'rgb(14, 15, 12)' }}>
+            <p className="body-medium mb-6" style={{ color: '#CBD5E1' }}>
               {result.explanation}
             </p>
-            <div className="pt-4 border-t" style={{ borderColor: 'rgba(0, 0, 0, 0.1)' }}>
-              <h4 className="font-semibold mb-2" style={{ color: 'rgb(0, 55, 32)' }}>Recommendation:</h4>
-              <p className="body-medium" style={{ color: 'rgb(14, 15, 12)' }}>
+            <div className="pt-4" style={{ borderTop: '1px solid rgba(59, 130, 246, 0.2)' }}>
+              <h4 className="font-semibold mb-3" style={{ color: '#10B981', fontSize: '1.1rem' }}>Recommendation:</h4>
+              <p className="body-medium" style={{ color: '#CBD5E1' }}>
                 {result.recommendation}
               </p>
             </div>

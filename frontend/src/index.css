@@ -1,150 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
     margin: 0;
-    font-family: system-ui, sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background: #0F172A;
+    color: #E2E8F0;
 }
 
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-/* ==================== FOUNDATION COLORS ==================== */
+/* ==================== TECH GUARDIAN THEME ==================== */
 :root {
-  /* Backgrounds - Clean & Minimal */
-  --bg-page: #FFFFFF;
-  --bg-card: #FFFFFF;
-  --bg-section: rgba(0, 0, 0, 0.02);
+  /* Dark Backgrounds */
+  --bg-midnight: #0F172A;
+  --bg-navy: #1E293B;
+  --bg-slate: #334155;
   
-  /* Text - Professional Hierarchy */
-  --text-primary: rgb(0, 55, 32);
-  --text-body: rgb(14, 15, 12);
-  --text-secondary: rgb(131, 146, 140);
-  --text-muted: rgb(175, 183, 180);
+  /* Accent Colors */
+  --neon-green: #10B981;
+  --electric-blue: #3B82F6;
+  --danger-red: #EF4444;
+  --warning-yellow: #F59E0B;
   
-  /* Borders - Subtle Separation */
-  --border-light: rgba(0, 0, 0, 0.1);
-  --border-medium: rgba(0, 0, 0, 0.2);
-  --border-strong: rgba(0, 0, 0, 0.3);
+  /* Text Colors */
+  --text-primary: #F1F5F9;
+  --text-secondary: #CBD5E1;
+  --text-muted: #94A3B8;
   
-  /* BRAND COLORS - Blue/Green Security Palette */
-  --accent-primary: #2563eb;
-  --accent-secondary: #10b981;
-  --accent-text: rgb(13, 121, 22);
-  --accent-wash: rgba(37, 99, 235, 0.1);
+  /* Glow Effects */
+  --glow-green: 0 0 20px rgba(16, 185, 129, 0.5);
+  --glow-blue: 0 0 20px rgba(59, 130, 246, 0.5);
+  --glow-red: 0 0 20px rgba(239, 68, 68, 0.5);
 }
 
-/* ==================== GRADIENT SYSTEM ==================== */
-:root {
-  /* Hero Gradients - Use ONLY for major sections */
-  --gradient-hero: radial-gradient(at 53% 78%, hsla(217, 91%, 60%, 0.15) 0px, transparent 50%), 
-                   radial-gradient(at 71% 91%, hsla(142, 76%, 36%, 0.15) 0px, transparent 50%), 
-                   radial-gradient(at 31% 91%, hsla(200, 100%, 70%, 0.1) 0px, transparent 50%);
-  
-  /* Button Gradients - For CTAs only */
-  --gradient-button: linear-gradient(to bottom right, #2563eb, #1d4ed8);
-  --gradient-button-green: linear-gradient(to bottom right, #10b981, #059669);
-}
-
-/* ==================== TYPOGRAPHY SCALE ==================== */
+/* ==================== TYPOGRAPHY ==================== */
 .heading-1 { 
-  font-family: system-ui, sans-serif; 
-  font-weight: 700; 
-  font-size: clamp(2.25rem, 5vw, 4.5rem); 
-  line-height: 0.9; 
+  font-family: 'Inter', sans-serif; 
+  font-weight: 800; 
+  font-size: clamp(2.5rem, 5vw, 4.5rem); 
+  line-height: 1.1; 
   letter-spacing: -0.02em; 
   color: var(--text-primary);
 }
 
 .heading-2 { 
-  font-family: system-ui, sans-serif; 
-  font-weight: 600; 
-  font-size: clamp(1.875rem, 4vw, 3rem); 
-  line-height: 0.95; 
+  font-family: 'Inter', sans-serif; 
+  font-weight: 700; 
+  font-size: clamp(2rem, 4vw, 3rem); 
+  line-height: 1.2; 
   letter-spacing: -0.015em; 
   color: var(--text-primary);
 }
 
 .heading-3 { 
-  font-family: system-ui, sans-serif; 
+  font-family: 'Inter', sans-serif; 
   font-weight: 600; 
-  font-size: clamp(1.25rem, 3vw, 1.5rem); 
-  line-height: 1.2; 
+  font-size: clamp(1.25rem, 3vw, 1.75rem); 
+  line-height: 1.3; 
   letter-spacing: -0.01em; 
   color: var(--text-primary);
 }
 
 .body-large { 
-  font-family: system-ui, sans-serif; 
+  font-family: 'Inter', sans-serif; 
   font-weight: 400; 
   font-size: clamp(1.125rem, 2.5vw, 1.25rem); 
   line-height: 1.6; 
-  color: var(--text-body); 
-}
-
-.body-medium { 
-  font-family: system-ui, sans-serif; 
-  font-weight: 400; 
-  font-size: clamp(1rem, 2vw, 1.125rem); 
-  line-height: 1.5; 
-  color: var(--text-body); 
-}
-
-.body-small { 
-  font-family: system-ui, sans-serif; 
-  font-weight: 400; 
-  font-size: 0.875rem; 
-  line-height: 1.4; 
   color: var(--text-secondary); 
 }
 
-.caption { 
-  font-family: system-ui, sans-serif; 
+.body-medium { 
+  font-family: 'Inter', sans-serif; 
   font-weight: 400; 
-  font-size: 0.75rem; 
-  line-height: 1.3; 
+  font-size: clamp(1rem, 2vw, 1.125rem); 
+  line-height: 1.6; 
+  color: var(--text-secondary); 
+}
+
+.body-small { 
+  font-family: 'Inter', sans-serif; 
+  font-weight: 400; 
+  font-size: 0.875rem; 
+  line-height: 1.5; 
   color: var(--text-muted); 
 }
 
-.button-text { 
-  font-family: system-ui, sans-serif; 
-  font-weight: 600; 
-  font-size: 1rem; 
-  line-height: 1.3; 
-}
-
-.link-text { 
-  font-family: system-ui, sans-serif; 
-  font-weight: 500; 
-  font-size: 1rem; 
-  line-height: 1.4; 
-  color: var(--accent-primary);
-  text-decoration: underline;
-  text-decoration-color: var(--accent-primary);
-  text-decoration-thickness: 0.08em;
-  text-underline-offset: 2px;
-}
-
-/* ==================== COMPONENT LIBRARY ==================== */
-
-/* 1. Primary Buttons - Blue CTA Style */
+/* ==================== BUTTONS ==================== */
 .btn-primary {
-  background: var(--gradient-button);
-  color: white;
+  background: var(--neon-green);
+  color: #0F172A;
   border: none;
-  border-radius: 9999px;
-  padding: 14px 24px;
-  font-family: system-ui, sans-serif;
+  border-radius: 8px;
+  padding: 14px 28px;
+  font-family: 'Inter', sans-serif;
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  min-height: 48px;
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -153,27 +114,26 @@ code {
 }
 
 .btn-primary:hover {
-  transform: scale(1.02);
-  box-shadow: 0px 4px 8px rgba(37, 99, 235, 0.3);
+  background: #059669;
+  box-shadow: var(--glow-green);
+  transform: translateY(-2px);
 }
 
 .btn-primary:active {
-  transform: scale(0.98);
+  transform: translateY(0);
 }
 
-/* 2. Secondary Buttons - Clean Outline Style */
 .btn-secondary {
   background: transparent;
-  color: var(--text-primary);
-  border: 1px solid var(--border-light);
-  border-radius: 9999px;
-  padding: 14px 24px;
-  font-family: system-ui, sans-serif;
-  font-weight: 500;
+  color: var(--neon-green);
+  border: 2px solid var(--neon-green);
+  border-radius: 8px;
+  padding: 12px 28px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-  min-height: 48px;
+  transition: all 0.3s ease;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -182,107 +142,38 @@ code {
 }
 
 .btn-secondary:hover {
-  background: rgba(0, 0, 0, 0.05);
-  border-color: var(--border-medium);
+  background: rgba(16, 185, 129, 0.1);
+  box-shadow: var(--glow-green);
 }
 
 .btn-secondary:active {
   transform: scale(0.98);
 }
 
-/* 3. Navigation Links - Minimal Interaction Style */
-.nav-link {
-  color: var(--text-muted);
-  text-decoration: none;
-  font-family: system-ui, sans-serif;
-  font-size: 1rem;
-  font-weight: 500;
-  padding: 6px 12px;
-  border-radius: 9999px;
-  transition: background 0.2s ease, color 0.2s ease;
-}
-
-.nav-link:hover {
-  background: rgba(0, 0, 0, 0.05);
-  color: var(--text-primary);
-}
-
-.nav-link:active {
-  background: rgba(0, 0, 0, 0.1);
-}
-
-/* 4. Product Cards - Clean Professional Style */
-.product-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-light);
+/* ==================== CARDS & PANELS ==================== */
+.cyber-panel {
+  background: var(--bg-navy);
+  border: 1px solid rgba(59, 130, 246, 0.2);
   border-radius: 12px;
   padding: 24px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-.product-card:hover {
+.cyber-panel:hover {
+  border-color: var(--neon-green);
+  box-shadow: 0 8px 16px rgba(16, 185, 129, 0.2);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-color: var(--border-medium);
 }
 
-.product-card-title {
-  font-family: system-ui, sans-serif;
-  font-weight: 600;
-  font-size: 1.125rem;
-  line-height: 1.3;
-  margin-bottom: 8px;
-  color: var(--text-primary);
+.glow-box {
+  background: var(--bg-navy);
+  border: 2px solid var(--neon-green);
+  border-radius: 12px;
+  box-shadow: var(--glow-green);
 }
 
-.product-card-description {
-  font-family: system-ui, sans-serif;
-  font-size: 0.875rem;
-  line-height: 1.4;
-  color: var(--text-secondary);
-  margin: 0;
-}
-
-/* 5. Hero Section - Gradient Background Pattern */
-.hero-section {
-  background: var(--gradient-hero);
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  text-align: center;
-  padding: 7rem 1.5rem 3rem;
-}
-
-.hero-content {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.hero-title {
-  font-family: system-ui, sans-serif;
-  font-weight: 700;
-  font-size: clamp(2.25rem, 5vw, 4.5rem);
-  line-height: 0.9;
-  letter-spacing: -0.02em;
-  color: var(--text-primary);
-  margin-bottom: 1.5rem;
-}
-
-.hero-subtitle {
-  font-family: system-ui, sans-serif;
-  font-size: clamp(1.125rem, 2.5vw, 1.25rem);
-  line-height: 1.5;
-  color: var(--text-secondary);
-  margin-bottom: 2rem;
-}
-
-/* 6. Navigation Header - Floating Style */
+/* ==================== NAVIGATION ==================== */
 .nav-header {
   position: fixed;
   top: 0;
@@ -292,206 +183,123 @@ code {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5rem;
-  height: 3.5rem;
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 0.5px solid var(--border-light);
-  border-radius: 9999px;
-  margin: 1.5rem;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  padding: 1rem 2rem;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(59, 130, 246, 0.2);
 }
 
-@media (max-width: 768px) {
-  .nav-header {
-    margin: 0.5rem;
-    border-radius: 0;
-    border: none;
-    border-bottom: 1px solid var(--border-light);
-  }
+.nav-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
 }
 
-/* ==================== LAYOUT SYSTEM ==================== */
-.ai-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem 1.5rem;
-  padding: 1.5rem;
-  max-width: 1200px;
-  margin: 0 auto;
+.nav-link:hover {
+  color: var(--neon-green);
+  background: rgba(16, 185, 129, 0.1);
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
+/* ==================== HERO SECTION ==================== */
+.hero-section {
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F172A 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  text-align: center;
+  padding: 8rem 1.5rem 4rem;
+  overflow: hidden;
 }
 
-@media (max-width: 768px) {
-  .container {
-    padding: 0 1rem;
-  }
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+  pointer-events: none;
 }
-
-/* ==================== SPACING SYSTEM ==================== */
-.space-xs { margin: 0.5rem; }
-.space-sm { margin: 1rem; }
-.space-md { margin: 1.5rem; }
-.space-lg { margin: 2rem; }
-.space-xl { margin: 3rem; }
-.space-2xl { margin: 4rem; }
-
-.pad-xs { padding: 0.5rem; }
-.pad-sm { padding: 1rem; }
-.pad-md { padding: 1.5rem; }
-.pad-lg { padding: 2rem; }
-.pad-xl { padding: 3rem; }
-.pad-2xl { padding: 4rem; }
 
 /* ==================== RESPONSIVE DESIGN ==================== */
-@media (max-width: 767px) {
-  .hero-section {
-    padding: 4rem 1rem;
-    min-height: 80vh;
-  }
-  
-  .ai-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+@media (max-width: 768px) {
+  .nav-header {
     padding: 1rem;
+    flex-wrap: wrap;
   }
   
-  .btn-primary,
-  .btn-secondary {
-    width: 100%;
-    min-height: 52px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .ai-grid {
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 2.5rem 2rem;
-  }
-  
-  .product-card:hover {
-    transform: translateY(-4px);
+  .hero-section {
+    padding: 6rem 1rem 3rem;
   }
 }
 
 /* ==================== ANIMATIONS ==================== */
-.btn-hover-scale {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.3); }
+  50% { box-shadow: 0 0 30px rgba(16, 185, 129, 0.6); }
 }
 
-.btn-hover-scale:hover {
-  transform: scale(1.02);
+.glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
 }
 
-.btn-hover-scale:active {
-  transform: scale(0.98);
+/* ==================== SCROLLBAR ==================== */
+::-webkit-scrollbar {
+  width: 10px;
 }
 
-.card-hover-lift {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+::-webkit-scrollbar-track {
+  background: var(--bg-midnight);
 }
 
-.card-hover-lift:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+::-webkit-scrollbar-thumb {
+  background: var(--bg-slate);
+  border-radius: 5px;
 }
 
-/* Respect reduced motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+::-webkit-scrollbar-thumb:hover {
+  background: var(--neon-green);
 }
 
 @layer base {
   :root {
-        --background: 0 0% 100%;
-        --foreground: 0 0% 3.9%;
-        --card: 0 0% 100%;
-        --card-foreground: 0 0% 3.9%;
-        --popover: 0 0% 100%;
-        --popover-foreground: 0 0% 3.9%;
-        --primary: 0 0% 9%;
-        --primary-foreground: 0 0% 98%;
-        --secondary: 0 0% 96.1%;
-        --secondary-foreground: 0 0% 9%;
-        --muted: 0 0% 96.1%;
-        --muted-foreground: 0 0% 45.1%;
-        --accent: 0 0% 96.1%;
-        --accent-foreground: 0 0% 9%;
-        --destructive: 0 84.2% 60.2%;
-        --destructive-foreground: 0 0% 98%;
-        --border: 0 0% 89.8%;
-        --input: 0 0% 89.8%;
-        --ring: 0 0% 3.9%;
-        --chart-1: 12 76% 61%;
-        --chart-2: 173 58% 39%;
-        --chart-3: 197 37% 24%;
-        --chart-4: 43 74% 66%;
-        --chart-5: 27 87% 67%;
-        --radius: 0.5rem;
-    }
-  .dark {
-        --background: 0 0% 3.9%;
-        --foreground: 0 0% 98%;
-        --card: 0 0% 3.9%;
-        --card-foreground: 0 0% 98%;
-        --popover: 0 0% 3.9%;
-        --popover-foreground: 0 0% 98%;
-        --primary: 0 0% 98%;
-        --primary-foreground: 0 0% 9%;
-        --secondary: 0 0% 14.9%;
-        --secondary-foreground: 0 0% 98%;
-        --muted: 0 0% 14.9%;
-        --muted-foreground: 0 0% 63.9%;
-        --accent: 0 0% 14.9%;
-        --accent-foreground: 0 0% 98%;
-        --destructive: 0 62.8% 30.6%;
-        --destructive-foreground: 0 0% 98%;
-        --border: 0 0% 14.9%;
-        --input: 0 0% 14.9%;
-        --ring: 0 0% 83.1%;
-        --chart-1: 220 70% 50%;
-        --chart-2: 160 60% 45%;
-        --chart-3: 30 80% 55%;
-        --chart-4: 280 65% 60%;
-        --chart-5: 340 75% 55%;
-    }
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 142.1 76.2% 36.3%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 217.2 91.2% 59.8%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 142.1 76.2% 36.3%;
+    --radius: 0.5rem;
+  }
 }
 
 @layer base {
   * {
     @apply border-border;
-    }
+  }
   body {
     @apply bg-background text-foreground;
-    }
-}
-
-/* Custom scrollbar styling */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg-section);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--border-medium);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--border-strong);
+  }
 }
