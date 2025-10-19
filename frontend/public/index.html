@@ -639,5 +639,52 @@
             resultsArea.classList.add('hidden');
         }
     </script>
+
+    <script>
+// ✅ UNIVERSAL FETCH OVERRIDE FOR TRUSTMYMSG — Cloudflare Worker Proxy
+(() => {
+  const ORIGINAL_FETCH = window.fetch;
+  window.fetch = async (url, options = {}) => {
+    try {
+      // If already going to worker → allow it
+      if (url.includes("odd-rain-b411.c44herbert.workers.dev")) {
+        return ORIGINAL_FETCH(url, options);
+      }
+
+      // If going to OpenAI or any AI endpoint → reroute
+      if (url.includes("api.openai.com") || url.includes("v1/chat") || url.includes("/analyze")) {
+        console.warn("🔁 Redirecting AI fetch → Cloudflare Worker Proxy");
+
+        let imageBase64 = null;
+
+        // Extract body content
+        if (options && options.body) {
+          try {
+            const parsed = JSON.parse(options.body);
+            imageBase64 = parsed.imageBase64 || parsed.content || parsed.data || null;
+          } catch (err) {
+            console.error("⚠️ Could not parse original body", err);
+          }
+        }
+
+        if (!imageBase64) {
+          return Promise.reject("❌ Missing imageBase64 — cannot proxy request");
+        }
+
+        return ORIGINAL_FETCH("https://odd-rain-b411.c44herbert.workers.dev/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ imageBase64 })
+        });
+      }
+
+      return ORIGINAL_FETCH(url, options);
+    } catch (err) {
+      console.error("🔥 FETCH OVERRIDE ERROR", err);
+      throw err;
+    }
+  };
+})();
+</script>
 </body>
 </html>
