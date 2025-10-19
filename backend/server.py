@@ -82,6 +82,70 @@ async def get_status_checks():
     
     return status_checks
 
+@api_router.post("/analyze", response_model=ScamAnalysisResponse)
+async def analyze_message(request: AnalyzeRequest):
+    """
+    Analyze a message screenshot for scam indicators using AI.
+    Accepts base64 encoded image and returns detailed scam analysis.
+    """
+    try:
+        # Get API key from environment
+        api_key = os.environ.get('EMERGENT_LLM_KEY')
+        if not api_key:
+            raise HTTPException(status_code=500, detail="API key not configured")
+        
+        # Create LLM chat instance with gpt-4o-mini
+        chat = LlmChat(
+            api_key=api_key,
+            session_id=f"scam-analysis-{uuid.uuid4()}",
+            system_message="""You are TrustMyMsg, an AI assistant that detects scam signals in chat screenshots.
+
+Return JSON ONLY with:
+{
+  "moneyRequest": boolean,
+  "loveBombing": boolean,
+  "urgency": boolean,
+  "avoidance": boolean,
+  "inconsistencies": ["array of notes"],
+  "commonPhrasesCount": number,
+  "redFlags": ["descriptions"],
+  "explanation": "short text",
+  "recommendation": "short text"
+}"""
+        ).with_model("openai", "gpt-4o-mini")
+        
+        # Create image content from base64
+        image_content = ImageContent(image_base64=request.imageBase64)
+        
+        # Create user message with image
+        user_message = UserMessage(
+            text="Analyze this chat screenshot and return JSON.",
+            file_contents=[image_content]
+        )
+        
+        # Send message and get response
+        response = await chat.send_message(user_message)
+        
+        # Parse JSON response
+        # Extract JSON from response (handle markdown code blocks)
+        response_text = response.strip()
+        if response_text.startswith("```json"):
+            response_text = response_text.split("```json")[1].split("```")[0].strip()
+        elif response_text.startswith("```"):
+            response_text = response_text.split("```")[1].split("```")[0].strip()
+        
+        analysis_data = json.loads(response_text)
+        
+        # Return structured response
+        return ScamAnalysisResponse(**analysis_data)
+        
+    except json.JSONDecodeError as e:
+        logger.error(f"Failed to parse AI response: {e}")
+        raise HTTPException(status_code=500, detail="Failed to parse analysis results")
+    except Exception as e:
+        logger.error(f"Analysis error: {e}")
+        raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
+
 # Include the router in the main app
 app.include_router(api_router)
 
