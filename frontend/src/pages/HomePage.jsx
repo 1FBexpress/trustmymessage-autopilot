@@ -1,11 +1,12 @@
 import React from 'react';
-import { Shield, CheckCircle, Users, Target, Heart, Share2, AlertTriangle, Lock, User } from 'lucide-react';
+import { Shield, CheckCircle, Users, Target, Heart, Share2, Lock, User } from 'lucide-react';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '../components/ui/accordion';
+import Scanner from '../components/Scanner';
 
 const HomePage = () => {
   return (
