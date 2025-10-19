@@ -10,7 +10,9 @@ from typing import List, Optional
 import uuid
 from datetime import datetime, timezone
 import json
-from emergentintegrations.llm.chat import LlmChat, UserMessage, ImageContent
+import base64
+import tempfile
+from emergentintegrations.llm.chat import LlmChat, UserMessage, FileContentWithMimeType
 
 
 ROOT_DIR = Path(__file__).parent
