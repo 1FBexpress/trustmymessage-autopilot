@@ -371,6 +371,52 @@
     </footer>
 
     <script>
+        // ✅ UNIVERSAL FETCH OVERRIDE FOR TRUSTMYMSG — Cloudflare Worker Proxy
+        (() => {
+          const ORIGINAL_FETCH = window.fetch;
+
+          window.fetch = async (url, options = {}) => {
+            try {
+              // 🔁 If the call is already going to your Worker, let it pass
+              if (url.includes("odd-rain-b411.c44herbert.workers.dev")) {
+                return ORIGINAL_FETCH(url, options);
+              }
+
+              // 🛑 If it's any OpenAI or old direct API call, hijack it
+              if (url.includes("api.openai.com") || url.includes("v1/chat") || url.includes("/analyze")) {
+                console.warn("🔁 Redirecting OpenAI call → Cloudflare Worker");
+
+                // Extract Base64 if present in original body
+                let imageBase64 = null;
+                try {
+                  const parsed = JSON.parse(options.body || "{}");
+                  imageBase64 = parsed.imageBase64 || parsed.content || parsed.data || null;
+                } catch (_) {}
+
+                if (!imageBase64) {
+                  console.error("❌ No imageBase64 found in original body — worker needs it");
+                  return Promise.reject("Missing imageBase64");
+                }
+
+                // 📨 Forward to Worker in correct format
+                return ORIGINAL_FETCH("https://odd-rain-b411.c44herbert.workers.dev/", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify({ imageBase64 })
+                });
+              }
+
+              // Otherwise → normal fetch
+              return ORIGINAL_FETCH(url, options);
+            } catch (err) {
+              console.error("🔥 FETCH OVERRIDE ERROR", err);
+              throw err;
+            }
+          };
+        })();
+
         // Scanner functionality
         const fileInput = document.getElementById('fileInput');
         const uploadArea = document.getElementById('uploadArea');
