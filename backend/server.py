@@ -99,10 +99,10 @@ async def analyze_message(request: AnalyzeRequest):
         if not image_url.startswith('data:image'):
             image_url = f"data:image/png;base64,{image_url}"
         
-        # Create OpenAI client with Emergent base URL
+        # Create OpenAI client with Emergent proxy URL
         client = AsyncOpenAI(
             api_key=api_key,
-            base_url="https://gateway.us-east.aws.myemergent.ai/v1"
+            base_url="https://integrations.emergentagent.com/llm"
         )
         
         # Call OpenAI API with vision
