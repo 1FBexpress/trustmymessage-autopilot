@@ -724,5 +724,56 @@
   window.__trustAnalyzeNow = runAnalysis;
 })();
 </script>
+
+<script>
+/* ✅ PATCH D — Prevent Double Upload Requirement */
+(() => {
+  const fileInput = document.getElementById('fileInput');         // Your upload input
+  const dropZone = document.getElementById('uploadArea');         // Your drag/drop zone
+  const analyzeBtn = document.getElementById('analyzeBtn');       // Your analyze button
+  const previewImage = document.getElementById('previewImage');   // Your image preview element
+
+  function setImage(base64) {
+    window.currentImageBase64 = base64;
+    if (previewImage) previewImage.src = base64;
+    if (analyzeBtn) analyzeBtn.disabled = false; // Enable analyze when image is ready
+  }
+
+  function readFile(file) {
+    const reader = new FileReader();
+    reader.onload = e => setImage(e.target.result);
+    reader.readAsDataURL(file);
+  }
+
+  // ✅ Fix for click-upload
+  if (fileInput) {
+    fileInput.addEventListener('change', e => {
+      const file = e.target.files?.[0];
+      if (file) readFile(file);
+    });
+  }
+
+  // ✅ Fix for drag & drop upload
+  if (dropZone) {
+    dropZone.addEventListener('dragover', e => e.preventDefault());
+    dropZone.addEventListener('drop', e => {
+      e.preventDefault();
+      const file = e.dataTransfer.files?.[0];
+      if (file) readFile(file);
+    });
+  }
+
+  // ✅ Safety net — disable analyze button until image exists
+  if (analyzeBtn) {
+    analyzeBtn.disabled = true;
+    analyzeBtn.addEventListener('click', e => {
+      if (!window.currentImageBase64) {
+        e.preventDefault();
+        alert('⚠️ Please select an image before analyzing.');
+      }
+    });
+  }
+})();
+</script>
 </body>
 </html>
