@@ -628,7 +628,10 @@
         return ORIGINAL_FETCH("https://odd-rain-b411.c44herbert.workers.dev/", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ imageBase64 })
+          body: JSON.stringify({ 
+            text: null,
+            imageBase64: imageBase64 
+          })
         });
       }
 
