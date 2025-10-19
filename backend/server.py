@@ -90,18 +90,26 @@ async def analyze_message(request: AnalyzeRequest):
     Analyze a message screenshot for scam indicators using AI.
     Accepts base64 encoded image and returns detailed scam analysis.
     """
+    temp_file_path = None
     try:
         # Get API key from environment
         api_key = os.environ.get('EMERGENT_LLM_KEY')
         if not api_key:
             raise HTTPException(status_code=500, detail="API key not configured")
         
-        # Ensure imageBase64 is in proper format
-        image_base64 = request.imageBase64
-        # If it doesn't start with data:image, add the prefix
-        if not image_base64.startswith('data:image'):
-            # Assume it's PNG if no format specified
-            image_base64 = f"data:image/png;base64,{image_base64}"
+        # Extract base64 data from data URI
+        image_data = request.imageBase64
+        if image_data.startswith('data:image'):
+            # Extract the base64 part after the comma
+            image_data = image_data.split(',')[1]
+        
+        # Decode base64 to bytes
+        image_bytes = base64.b64decode(image_data)
+        
+        # Save to temporary file
+        with tempfile.NamedTemporaryFile(mode='wb', suffix='.png', delete=False) as temp_file:
+            temp_file.write(image_bytes)
+            temp_file_path = temp_file.name
         
         # Create LLM chat instance with gpt-4o-mini
         chat = LlmChat(
@@ -123,13 +131,16 @@ Return JSON ONLY with:
 }"""
         ).with_model("openai", "gpt-4o-mini")
         
-        # Create image content from base64
-        image_content = ImageContent(image_base64=image_base64)
+        # Create file content from saved file
+        file_content = FileContentWithMimeType(
+            mime_type="image/png",
+            file_path=temp_file_path
+        )
         
         # Create user message with image
         user_message = UserMessage(
             text="Analyze this chat screenshot and return JSON.",
-            file_contents=[image_content]
+            file_contents=[file_content]
         )
         
         # Send message and get response
@@ -154,6 +165,13 @@ Return JSON ONLY with:
     except Exception as e:
         logger.error(f"Analysis error: {e}")
         raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
+    finally:
+        # Clean up temporary file
+        if temp_file_path and os.path.exists(temp_file_path):
+            try:
+                os.unlink(temp_file_path)
+            except Exception as e:
+                logger.warning(f"Failed to delete temp file: {e}")
 
 # Include the router in the main app
 app.include_router(api_router)
