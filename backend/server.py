@@ -10,7 +10,7 @@ from typing import List, Optional
 import uuid
 from datetime import datetime, timezone
 import json
-import litellm
+from openai import AsyncOpenAI
 
 
 ROOT_DIR = Path(__file__).parent
