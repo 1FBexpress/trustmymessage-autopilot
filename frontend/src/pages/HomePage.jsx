@@ -54,7 +54,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Scanner Section - Placeholder */}
+      {/* Scanner Section */}
       <section id="scanner" className="py-16 px-6">
         <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-12">
@@ -64,16 +64,8 @@ const HomePage = () => {
             </p>
           </div>
           
-          {/* Scanner Placeholder Container */}
-          <div className="scanner-placeholder-container">
-            <div className="flex flex-col items-center justify-center py-20 px-8 border-2 border-dashed rounded-xl" 
-                 style={{ borderColor: 'rgba(0, 0, 0, 0.1)', backgroundColor: 'rgba(0, 0, 0, 0.02)' }}>
-              <AlertTriangle className="w-12 h-12 mb-4" style={{ color: '#10b981', strokeWidth: 1.5 }} />
-              <p className="body-medium text-center" style={{ color: 'rgb(131, 146, 140)' }}>
-                Scanner interface will be integrated here
-              </p>
-            </div>
-          </div>
+          {/* Scanner Component */}
+          <Scanner />
         </div>
       </section>
 
