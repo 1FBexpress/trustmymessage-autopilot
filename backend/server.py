@@ -88,32 +88,25 @@ async def analyze_message(request: AnalyzeRequest):
     Analyze a message screenshot for scam indicators using AI.
     Accepts base64 encoded image and returns detailed scam analysis.
     """
-    temp_file_path = None
     try:
         # Get API key from environment
         api_key = os.environ.get('EMERGENT_LLM_KEY')
         if not api_key:
             raise HTTPException(status_code=500, detail="API key not configured")
         
-        # Extract base64 data from data URI
-        image_data = request.imageBase64
-        if image_data.startswith('data:image'):
-            # Extract the base64 part after the comma
-            image_data = image_data.split(',')[1]
+        # Ensure imageBase64 has proper format
+        image_url = request.imageBase64
+        if not image_url.startswith('data:image'):
+            image_url = f"data:image/png;base64,{image_url}"
         
-        # Decode base64 to bytes
-        image_bytes = base64.b64decode(image_data)
-        
-        # Save to temporary file
-        with tempfile.NamedTemporaryFile(mode='wb', suffix='.png', delete=False) as temp_file:
-            temp_file.write(image_bytes)
-            temp_file_path = temp_file.name
-        
-        # Create LLM chat instance with gpt-4o-mini
-        chat = LlmChat(
+        # Call litellm directly with OpenAI format
+        response = await litellm.acompletion(
+            model="gpt-4o-mini",
             api_key=api_key,
-            session_id=f"scam-analysis-{uuid.uuid4()}",
-            system_message="""You are TrustMyMsg, an AI assistant that detects scam signals in chat screenshots.
+            messages=[
+                {
+                    "role": "system",
+                    "content": """You are TrustMyMsg, an AI assistant that detects scam signals in chat screenshots.
 
 Return JSON ONLY with:
 {
@@ -127,26 +120,30 @@ Return JSON ONLY with:
   "explanation": "short text",
   "recommendation": "short text"
 }"""
-        ).with_model("openai", "gpt-4o-mini")
-        
-        # Create file content from saved file
-        file_content = FileContentWithMimeType(
-            mime_type="image/png",
-            file_path=temp_file_path
+                },
+                {
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Analyze this chat screenshot and return JSON."
+                        },
+                        {
+                            "type": "image_url",
+                            "image_url": {
+                                "url": image_url
+                            }
+                        }
+                    ]
+                }
+            ],
+            temperature=0.2
         )
         
-        # Create user message with image
-        user_message = UserMessage(
-            text="Analyze this chat screenshot and return JSON.",
-            file_contents=[file_content]
-        )
+        # Extract response text
+        response_text = response.choices[0].message.content.strip()
         
-        # Send message and get response
-        response = await chat.send_message(user_message)
-        
-        # Parse JSON response
-        # Extract JSON from response (handle markdown code blocks)
-        response_text = response.strip()
+        # Parse JSON response (handle markdown code blocks)
         if response_text.startswith("```json"):
             response_text = response_text.split("```json")[1].split("```")[0].strip()
         elif response_text.startswith("```"):
@@ -163,13 +160,6 @@ Return JSON ONLY with:
     except Exception as e:
         logger.error(f"Analysis error: {e}")
         raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
-    finally:
-        # Clean up temporary file
-        if temp_file_path and os.path.exists(temp_file_path):
-            try:
-                os.unlink(temp_file_path)
-            except Exception as e:
-                logger.warning(f"Failed to delete temp file: {e}")
 
 # Include the router in the main app
 app.include_router(api_router)
