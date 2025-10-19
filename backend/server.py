@@ -99,10 +99,16 @@ async def analyze_message(request: AnalyzeRequest):
         if not image_url.startswith('data:image'):
             image_url = f"data:image/png;base64,{image_url}"
         
-        # Call litellm directly with OpenAI format
-        response = await litellm.acompletion(
-            model="gpt-4o-mini",
+        # Create OpenAI client with Emergent base URL
+        client = AsyncOpenAI(
             api_key=api_key,
+            base_url="https://gateway.us-east.aws.myemergent.ai/v1"
+        )
+        
+        # Call OpenAI API with vision
+        response = await client.chat.completions.create(
+            model="gpt-4o-mini",
+            temperature=0.2,
             messages=[
                 {
                     "role": "system",
@@ -136,8 +142,7 @@ Return JSON ONLY with:
                         }
                     ]
                 }
-            ],
-            temperature=0.2
+            ]
         )
         
         # Extract response text
