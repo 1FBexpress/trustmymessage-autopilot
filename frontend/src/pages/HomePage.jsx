@@ -19,6 +19,72 @@ const HomePage = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    // Currency switcher logic
+    const LINKS = {
+      USD: {
+        small: "https://buy.stripe.com/dRmcMY66Q9Ka6L20h56c002",
+        strong: "https://buy.stripe.com/7sY6oA0MwbSifhyd3R6c001",
+        guardian: "https://buy.stripe.com/28EfZa8eY1dE2uMfbZ6c000"
+      },
+      EUR: {
+        small: "https://buy.stripe.com/3cIdR21QA6xYfhy8NB6c005",
+        strong: "https://buy.stripe.com/eVq9AM52M5tUc5md3R6c004",
+        guardian: "https://buy.stripe.com/8x2cMY1QAe0q3yQ4xl6c003"
+      },
+      GBP: {
+        small: "https://buy.stripe.com/5kQ5kw1QA8G60mE7Jx6c008",
+        strong: "https://buy.stripe.com/28E4gsfHq5tU3yQ2pd6c007",
+        guardian: "https://buy.stripe.com/aFadR27aUbSid9q2pd6c006"
+      }
+    };
+
+    const LABELS = {
+      USD: { small: "$5 USD", strong: "$10 USD", guardian: "$25 USD" },
+      EUR: { small: "€5 EUR", strong: "€10 EUR", guardian: "€25 EUR" },
+      GBP: { small: "£5 GBP", strong: "£10 GBP", guardian: "£25 GBP" }
+    };
+
+    const setCurrency = (cur) => {
+      const priceSmall = document.getElementById("price-small");
+      const priceStrong = document.getElementById("price-strong");
+      const priceGuardian = document.getElementById("price-guardian");
+      const linkSmall = document.getElementById("link-small");
+      const linkStrong = document.getElementById("link-strong");
+      const linkGuardian = document.getElementById("link-guardian");
+
+      if (priceSmall) priceSmall.textContent = LABELS[cur].small;
+      if (priceStrong) priceStrong.textContent = LABELS[cur].strong;
+      if (priceGuardian) priceGuardian.textContent = LABELS[cur].guardian;
+
+      if (linkSmall) linkSmall.href = LINKS[cur].small;
+      if (linkStrong) linkStrong.href = LINKS[cur].strong;
+      if (linkGuardian) linkGuardian.href = LINKS[cur].guardian;
+
+      // Update tab styles
+      document.querySelectorAll(".cur-tab").forEach(btn => {
+        const btnDataCur = btn.getAttribute("data-cur");
+        if (btnDataCur === cur) {
+          btn.style.borderColor = "#10B981";
+          btn.style.background = "#1E293B";
+          btn.style.color = "#F1F5F9";
+        } else {
+          btn.style.borderColor = "rgba(59, 130, 246, 0.3)";
+          btn.style.background = "#0F172A";
+          btn.style.color = "#94A3B8";
+        }
+      });
+    };
+
+    // Attach click handlers
+    document.querySelectorAll(".cur-tab").forEach(btn => {
+      btn.addEventListener("click", () => setCurrency(btn.getAttribute("data-cur")));
+    });
+
+    // Set default currency
+    setCurrency("USD");
+  }, []);
+
   return (
     <div className="min-h-screen" style={{ background: '#0F172A' }}>
       {/* Navigation Header */}
