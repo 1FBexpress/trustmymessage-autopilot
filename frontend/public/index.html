@@ -258,79 +258,54 @@
             </svg>
             <h2 class="text-4xl md:text-5xl font-bold mb-4">Support the Mission</h2>
             <p class="text-xl text-slate-300 mb-2">
-                We rely on people like you to spread awareness and stop scammers.
+                If you believe people deserve protection online, help us grow.
             </p>
-            <p class="text-slate-400 italic mb-12">Small donations help us protect more people.</p>
+            <p class="text-slate-400 italic mb-6">Every donation helps us protect more people from scams.</p>
 
-            <!-- Donation Tiers -->
-            <div class="mb-8">
-              <p class="text-slate-400 text-center mb-4 font-semibold">Choose Your Currency:</p>
-              
-              <!-- USD Tier -->
-              <div class="mb-8">
-                <p class="text-center text-green-500 font-bold mb-4 text-lg">🇺🇸 USD Support</p>
-                <div class="flex flex-col sm:flex-row gap-5 justify-center">
-                  <a href="https://donate.stripe.com/small_help_usd" target="_blank" rel="noopener" class="cyber-panel rounded-xl p-6 border-2 border-green-500 hover:bg-green-500/10 transition flex flex-col items-center gap-3 min-w-[180px]" title="Your one-time support of $5 helps us maintain the scanner and protect people from scams.">
-                    <span class="text-3xl">❤️</span>
-                    <span class="text-xl font-bold text-green-500">$5 USD</span>
-                    <span class="text-sm text-slate-400">Small Help</span>
-                  </a>
-                  <a href="https://donate.stripe.com/strong_support_usd" target="_blank" rel="noopener" class="cyber-panel rounded-xl p-6 border-2 border-green-500 hover:bg-green-500/10 transition flex flex-col items-center gap-3 min-w-[180px]" title="Your one-time support of $10 helps us improve scam detection and keep TrustMyMsg online for everyone.">
-                    <span class="text-3xl">⚡</span>
-                    <span class="text-xl font-bold text-green-500">$10 USD</span>
-                    <span class="text-sm text-slate-400">Strong Support</span>
-                  </a>
-                  <a href="https://donate.stripe.com/guardian_tier_usd" target="_blank" rel="noopener" class="cyber-panel rounded-xl p-6 border-2 border-green-500 hover:bg-green-500/10 transition flex flex-col items-center gap-3 min-w-[180px]" title="Your one-time support of $25 helps us scale infrastructure and defend more people against scams.">
-                    <span class="text-3xl">🛡️</span>
-                    <span class="text-xl font-bold text-green-500">$25 USD</span>
-                    <span class="text-sm text-slate-400">Guardian Tier</span>
-                  </a>
-                </div>
-              </div>
+            <!-- Flag Tabs -->
+            <div id="currencyTabs" class="flex justify-center gap-3 mb-8 mt-10">
+                <button data-cur="USD" class="cur-tab px-4 py-3 rounded-lg border-2 flex items-center gap-2 font-semibold transition-all" style="border-color: #10B981; background: #1E293B; color: #F1F5F9;">
+                    <span>🇺🇸</span> USD
+                </button>
+                <button data-cur="EUR" class="cur-tab px-4 py-3 rounded-lg border-2 flex items-center gap-2 font-semibold transition-all hover:text-white" style="border-color: rgba(59, 130, 246, 0.3); background: #0F172A; color: #94A3B8;">
+                    <span>🇪🇺</span> EUR
+                </button>
+                <button data-cur="GBP" class="cur-tab px-4 py-3 rounded-lg border-2 flex items-center gap-2 font-semibold transition-all hover:text-white" style="border-color: rgba(59, 130, 246, 0.3); background: #0F172A; color: #94A3B8;">
+                    <span>🇬🇧</span> GBP
+                </button>
+            </div>
 
-              <!-- EUR Tier -->
-              <div class="mb-8">
-                <p class="text-center text-blue-400 font-bold mb-4 text-lg">🇪🇺 EUR Support</p>
-                <div class="flex flex-col sm:flex-row gap-5 justify-center">
-                  <a href="https://donate.stripe.com/small_help_eur" target="_blank" rel="noopener" class="cyber-panel rounded-xl p-6 border-2 border-blue-400 hover:bg-blue-500/10 transition flex flex-col items-center gap-3 min-w-[180px]" title="Your one-time support of €5 helps us maintain the scanner and protect people from scams.">
-                    <span class="text-3xl">❤️</span>
-                    <span class="text-xl font-bold text-blue-400">€5 EUR</span>
-                    <span class="text-sm text-slate-400">Small Help</span>
-                  </a>
-                  <a href="https://donate.stripe.com/strong_support_eur" target="_blank" rel="noopener" class="cyber-panel rounded-xl p-6 border-2 border-blue-400 hover:bg-blue-500/10 transition flex flex-col items-center gap-3 min-w-[180px]" title="Your one-time support of €10 helps us improve scam detection and keep TrustMyMsg online for everyone.">
-                    <span class="text-3xl">⚡</span>
-                    <span class="text-xl font-bold text-blue-400">€10 EUR</span>
-                    <span class="text-sm text-slate-400">Strong Support</span>
-                  </a>
-                  <a href="https://donate.stripe.com/guardian_tier_eur" target="_blank" rel="noopener" class="cyber-panel rounded-xl p-6 border-2 border-blue-400 hover:bg-blue-500/10 transition flex flex-col items-center gap-3 min-w-[180px]" title="Your one-time support of €25 helps us scale infrastructure and defend more people against scams.">
-                    <span class="text-3xl">🛡️</span>
-                    <span class="text-xl font-bold text-blue-400">€25 EUR</span>
-                    <span class="text-sm text-slate-400">Guardian Tier</span>
-                  </a>
-                </div>
-              </div>
+            <!-- Three Donation Tiers -->
+            <div id="tiers" class="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
+                <!-- Small Help -->
+                <a id="link-small" target="_blank" rel="noopener" class="cyber-panel rounded-xl p-6 border-2 hover:transform hover:-translate-y-1 transition-all" style="border-color: #10B981;">
+                    <div class="text-4xl mb-3 text-center">❤️</div>
+                    <div id="price-small" class="text-2xl font-bold text-center mb-2" style="color: #10B981;">$5 USD</div>
+                    <div class="text-sm text-center mb-3" style="color: #CBD5E1;">Small Help</div>
+                    <div class="text-xs text-center" style="color: #94A3B8;">
+                        Your one-time support helps us maintain the scanner and protect people from scams.
+                    </div>
+                </a>
 
-              <!-- GBP Tier -->
-              <div>
-                <p class="text-center text-purple-400 font-bold mb-4 text-lg">🇬🇧 GBP Support</p>
-                <div class="flex flex-col sm:flex-row gap-5 justify-center">
-                  <a href="https://donate.stripe.com/small_help_gbp" target="_blank" rel="noopener" class="cyber-panel rounded-xl p-6 border-2 border-purple-400 hover:bg-purple-500/10 transition flex flex-col items-center gap-3 min-w-[180px]" title="Your one-time support of £5 helps us maintain the scanner and protect people from scams.">
-                    <span class="text-3xl">❤️</span>
-                    <span class="text-xl font-bold text-purple-400">£5 GBP</span>
-                    <span class="text-sm text-slate-400">Small Help</span>
-                  </a>
-                  <a href="https://donate.stripe.com/strong_support_gbp" target="_blank" rel="noopener" class="cyber-panel rounded-xl p-6 border-2 border-purple-400 hover:bg-purple-500/10 transition flex flex-col items-center gap-3 min-w-[180px]" title="Your one-time support of £10 helps us improve scam detection and keep TrustMyMsg online for everyone.">
-                    <span class="text-3xl">⚡</span>
-                    <span class="text-xl font-bold text-purple-400">£10 GBP</span>
-                    <span class="text-sm text-slate-400">Strong Support</span>
-                  </a>
-                  <a href="https://donate.stripe.com/guardian_tier_gbp" target="_blank" rel="noopener" class="cyber-panel rounded-xl p-6 border-2 border-purple-400 hover:bg-purple-500/10 transition flex flex-col items-center gap-3 min-w-[180px]" title="Your one-time support of £25 helps us scale infrastructure and defend more people against scams.">
-                    <span class="text-3xl">🛡️</span>
-                    <span class="text-xl font-bold text-purple-400">£25 GBP</span>
-                    <span class="text-sm text-slate-400">Guardian Tier</span>
-                  </a>
-                </div>
-              </div>
+                <!-- Strong Support -->
+                <a id="link-strong" target="_blank" rel="noopener" class="cyber-panel rounded-xl p-6 border-2 hover:transform hover:-translate-y-1 transition-all" style="border-color: #F59E0B;">
+                    <div class="text-4xl mb-3 text-center">⚡</div>
+                    <div id="price-strong" class="text-2xl font-bold text-center mb-2" style="color: #F59E0B;">$10 USD</div>
+                    <div class="text-sm text-center mb-3" style="color: #CBD5E1;">Strong Support</div>
+                    <div class="text-xs text-center" style="color: #94A3B8;">
+                        Your one-time support helps us improve scam detection and keep TrustMyMsg online for everyone.
+                    </div>
+                </a>
+
+                <!-- Guardian Tier -->
+                <a id="link-guardian" target="_blank" rel="noopener" class="cyber-panel rounded-xl p-6 border-2 hover:transform hover:-translate-y-1 transition-all" style="border-color: #6366F1;">
+                    <div class="text-4xl mb-3 text-center">🛡️</div>
+                    <div id="price-guardian" class="text-2xl font-bold text-center mb-2" style="color: #6366F1;">$25 USD</div>
+                    <div class="text-sm text-center mb-3" style="color: #CBD5E1;">Guardian Tier</div>
+                    <div class="text-xs text-center" style="color: #94A3B8;">
+                        Your one-time support helps us scale infrastructure and defend more people against scams.
+                    </div>
+                </a>
             </div>
 
             <p class="text-slate-400 mb-4">Or share this project:</p>
