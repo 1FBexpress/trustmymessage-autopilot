@@ -150,51 +150,61 @@ const HomePage = () => {
 
       {/* Support / Crowdfund Section */}
       <section id="support" className="py-20 px-6" style={{ background: '#0F172A' }}>
-        <div className="container mx-auto max-w-4xl">
-          <div className="text-center mb-12">
-            <Heart className="w-12 h-12 mx-auto mb-6" style={{ color: '#10B981', strokeWidth: 1.5 }} />
-            <h2 className="heading-2 mb-4">Support the Mission</h2>
-            <p className="body-large mb-2" style={{ color: '#CBD5E1' }}>
-              If you believe people deserve protection online, help us grow.
-            </p>
-            <p className="body-small" style={{ color: '#94A3B8', fontStyle: 'italic' }}>
-              Every £5 helps us protect more people from scams.
-            </p>
-          </div>
+        <div className="container mx-auto max-w-4xl text-center">
+          <Heart className="w-12 h-12 mx-auto mb-6" style={{ color: '#10B981', strokeWidth: 1.5 }} />
+          <h2 className="heading-2 mb-4">Support the Mission</h2>
+          <p className="body-large mb-2" style={{ color: '#CBD5E1' }}>
+            If you believe people deserve protection online, help us grow.
+          </p>
+          <p className="body-small" style={{ color: '#94A3B8', fontStyle: 'italic' }}>
+            Every donation helps us protect more people from scams.
+          </p>
+        </div>
 
-          {/* Donation Tier Buttons */}
-          <div className="flex flex-col sm:flex-row gap-5 justify-center mb-12">
-            <a href="STRIPE_LINK_TIER_1" className="donate-tier">
-              <span className="tier-icon">❤️</span>
-              <span style={{ fontSize: '1.1rem', fontWeight: 700 }}>£5 / $5</span>
-              <span className="tier-label">Small Help</span>
-            </a>
-            <a href="STRIPE_LINK_TIER_2" className="donate-tier">
-              <span className="tier-icon">⚡</span>
-              <span style={{ fontSize: '1.1rem', fontWeight: 700 }}>£10 / $10</span>
-              <span className="tier-label">Strong Support</span>
-            </a>
-            <a href="STRIPE_LINK_TIER_3" className="donate-tier">
-              <span className="tier-icon">🛡️</span>
-              <span style={{ fontSize: '1.1rem', fontWeight: 700 }}>£25 / $25</span>
-              <span className="tier-label">Guardian Tier</span>
-            </a>
-          </div>
+        {/* Flag Tabs */}
+        <div id="currencyTabs" className="flex justify-center gap-3 mb-8 mt-10">
+          <button data-cur="USD" className="cur-tab px-4 py-3 rounded-lg border-2 flex items-center gap-2 font-semibold transition-all" style={{ borderColor: '#10B981', background: '#1E293B', color: '#F1F5F9' }}>
+            <span>🇺🇸</span> USD
+          </button>
+          <button data-cur="EUR" className="cur-tab px-4 py-3 rounded-lg border-2 flex items-center gap-2 font-semibold transition-all hover:text-white" style={{ borderColor: 'rgba(59, 130, 246, 0.3)', background: '#0F172A', color: '#94A3B8' }}>
+            <span>🇪🇺</span> EUR
+          </button>
+          <button data-cur="GBP" className="cur-tab px-4 py-3 rounded-lg border-2 flex items-center gap-2 font-semibold transition-all hover:text-white" style={{ borderColor: 'rgba(59, 130, 246, 0.3)', background: '#0F172A', color: '#94A3B8' }}>
+            <span>🇬🇧</span> GBP
+          </button>
+        </div>
 
-          {/* Share Buttons */}
-          <div className="text-center">
-            <p className="body-medium mb-4" style={{ color: '#94A3B8' }}>Or share this project:</p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <a href="TWITTER_SHARE_LINK" className="btn-secondary" style={{ fontSize: '0.95rem', padding: '12px 24px' }}>
-                <Share2 className="w-4 h-4" />
-                Share on Twitter
-              </a>
-              <a href="FACEBOOK_SHARE_LINK" className="btn-secondary" style={{ fontSize: '0.95rem', padding: '12px 24px' }}>
-                <Share2 className="w-4 h-4" />
-                Share on Facebook
-              </a>
+        {/* Three Donation Tiers */}
+        <div id="tiers" className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          {/* Small Help */}
+          <a id="link-small" target="_blank" rel="noopener" className="cyber-panel rounded-xl p-6 border-2 hover:transform hover:-translate-y-1 transition-all" style={{ borderColor: '#10B981' }}>
+            <div className="text-4xl mb-3 text-center">❤️</div>
+            <div id="price-small" className="text-2xl font-bold text-center mb-2" style={{ color: '#10B981' }}>$5 USD</div>
+            <div className="text-sm text-center mb-3" style={{ color: '#CBD5E1' }}>Small Help</div>
+            <div className="text-xs text-center" style={{ color: '#94A3B8' }}>
+              Your one-time support helps us maintain the scanner and protect people from scams.
             </div>
-          </div>
+          </a>
+
+          {/* Strong Support */}
+          <a id="link-strong" target="_blank" rel="noopener" className="cyber-panel rounded-xl p-6 border-2 hover:transform hover:-translate-y-1 transition-all" style={{ borderColor: '#F59E0B' }}>
+            <div className="text-4xl mb-3 text-center">⚡</div>
+            <div id="price-strong" className="text-2xl font-bold text-center mb-2" style={{ color: '#F59E0B' }}>$10 USD</div>
+            <div className="text-sm text-center mb-3" style={{ color: '#CBD5E1' }}>Strong Support</div>
+            <div className="text-xs text-center" style={{ color: '#94A3B8' }}>
+              Your one-time support helps us improve scam detection and keep TrustMyMsg online for everyone.
+            </div>
+          </a>
+
+          {/* Guardian Tier */}
+          <a id="link-guardian" target="_blank" rel="noopener" className="cyber-panel rounded-xl p-6 border-2 hover:transform hover:-translate-y-1 transition-all" style={{ borderColor: '#6366F1' }}>
+            <div className="text-4xl mb-3 text-center">🛡️</div>
+            <div id="price-guardian" className="text-2xl font-bold text-center mb-2" style={{ color: '#6366F1' }}>$25 USD</div>
+            <div className="text-sm text-center mb-3" style={{ color: '#CBD5E1' }}>Guardian Tier</div>
+            <div className="text-xs text-center" style={{ color: '#94A3B8' }}>
+              Your one-time support helps us scale infrastructure and defend more people against scams.
+            </div>
+          </a>
         </div>
       </section>
 
