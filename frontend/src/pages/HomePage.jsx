@@ -206,6 +206,21 @@ const HomePage = () => {
             </div>
           </a>
         </div>
+
+        {/* Share Buttons */}
+        <div className="text-center mt-12">
+          <p className="body-medium mb-4" style={{ color: '#94A3B8' }}>Or share this project:</p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <a href="https://twitter.com/intent/tweet?text=Check%20out%20TrustMyMsg%20-%20AI-powered%20scam%20detection%20tool%20that%20helps%20protect%20people%20from%20online%20scams!&url=https://trustmymessage.tech" target="_blank" rel="noopener" className="btn-secondary" style={{ fontSize: '0.95rem', padding: '12px 24px' }}>
+              <Share2 className="w-4 h-4" />
+              Share on Twitter
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://trustmymessage.tech" target="_blank" rel="noopener" className="btn-secondary" style={{ fontSize: '0.95rem', padding: '12px 24px' }}>
+              <Share2 className="w-4 h-4" />
+              Share on Facebook
+            </a>
+          </div>
+        </div>
       </section>
 
       {/* FAQ Section */}
