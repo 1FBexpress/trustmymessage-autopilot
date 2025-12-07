@@ -109,8 +109,8 @@ const Startsida = () => {
           </div>
 
           <div className="text-center mt-12">
-            <Link to="/kunskapscenter" className="btn-secondary flex items-center gap-2 mx-auto" style={{ maxWidth: '300px' }}>
-              Läs mer i vårt kunskapscenter
+            <Link to="/blog/hur-kanner-man-igen-bedragare-online-2025" className="btn-secondary flex items-center gap-2 mx-auto" style={{ maxWidth: '350px' }}>
+              Läs vår bedrägeriguide 2025
               <ArrowRight className="w-5 h-5" />
             </Link>
           </div>
