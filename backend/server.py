@@ -540,6 +540,31 @@ For each generated page:
 - NO "you should consider."
 - Assume the user wants to deploy this immediately.
 - Write in {website['main_language']} language.
+
+---
+
+### 6. FILE UPDATE PLAN
+After generating all content above, provide exact file-writing instructions:
+
+## 🔧 FILE UPDATE PLAN
+
+For each page generated:
+- **File Path:** Full path (e.g., `/app/frontend/public/index.html`)
+- **Action:** CREATE or OVERWRITE
+- **Content:** Full HTML document in a code block with language hint (```html)
+
+For sitemap:
+- **File Path:** `/app/frontend/public/sitemap.xml`
+- **Action:** PATCH
+- **Content:** XML entries to add
+
+RULES for FILE UPDATE PLAN:
+- Provide COMPLETE HTML documents, not fragments
+- Include all DOCTYPE, head, and body tags
+- Inject JSON-LD schema into each page's <head>
+- Include internal links in the HTML where specified
+- All paths must be absolute from project root
+- Every file must be ready to write without modification
 """
     
     user_message = UserMessage(text=prompt)
