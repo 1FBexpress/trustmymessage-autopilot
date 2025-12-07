@@ -300,6 +300,31 @@ function App() {
     }
   };
 
+  const handleApplyProductionPackage = async (snapshotId) => {
+    if (!confirm("This will update your website files. Are you sure you want to continue?")) {
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await axios.post(`${API}/seo/apply-production-package`, {
+        snapshot_id: snapshotId
+      });
+
+      toast.success(`Applied ${response.data.applied_files.length} file updates successfully!`);
+      
+      if (response.data.errors.length > 0) {
+        toast.error(`${response.data.errors.length} files failed to update`);
+      }
+    } catch (error) {
+      console.error("Error applying production package:", error);
+      toast.error("Failed to apply production package");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const currentStage = activeWebsite ? stages[activeWebsite.current_stage] : null;
 
   return (
