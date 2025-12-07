@@ -649,13 +649,26 @@ async def apply_production_package(input: ApplyProductionPackageRequest):
     if not file_operations:
         raise HTTPException(status_code=400, detail="No file operations found in FILE UPDATE PLAN")
     
+    # Determine website subfolder based on website name
+    website_folder = "trustmymessage" if "trustmymessage" in website['domain'].lower() else "fullbin"
+    base_public_path = f"/app/frontend/public/{website_folder}"
+    
     # Apply file operations
     applied_files = []
     errors = []
     
     for operation in file_operations:
         try:
-            file_path = operation['path']
+            original_path = operation['path']
+            
+            # Adjust path to write to correct website folder
+            # If path starts with /app/frontend/public/, replace with website-specific path
+            if original_path.startswith('/app/frontend/public/'):
+                relative_path = original_path.replace('/app/frontend/public/', '')
+                file_path = os_module.path.join(base_public_path, relative_path)
+            else:
+                # If it's a different path structure, keep it as is
+                file_path = original_path
             
             # Create directory if it doesn't exist
             dir_path = os_module.path.dirname(file_path)
@@ -669,7 +682,8 @@ async def apply_production_package(input: ApplyProductionPackageRequest):
             applied_files.append({
                 'path': file_path,
                 'action': operation['action'],
-                'status': 'success'
+                'status': 'success',
+                'website_folder': website_folder
             })
             
         except Exception as e:
