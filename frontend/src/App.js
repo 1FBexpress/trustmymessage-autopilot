@@ -721,6 +721,19 @@ function App() {
                                   </div>
                                 </CardHeader>
                                 <CardContent>
+                                  {snapshot.snapshot_type === "Autopilot Production Package" && (
+                                    <Button
+                                      onClick={() => handleApplyProductionPackage(snapshot.id)}
+                                      disabled={loading}
+                                      variant="default"
+                                      size="sm"
+                                      className="w-full mb-3 bg-green-600 hover:bg-green-700"
+                                      data-testid={`apply-package-${snapshot.id}`}
+                                    >
+                                      <CheckCircle2 className="w-4 h-4 mr-2" />
+                                      {loading ? "Applying..." : "Apply to Website"}
+                                    </Button>
+                                  )}
                                   <details className="text-xs">
                                     <summary className="cursor-pointer font-medium text-slate-700 hover:text-slate-900">
                                       View details
