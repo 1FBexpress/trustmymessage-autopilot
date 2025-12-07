@@ -483,20 +483,42 @@ function App() {
                     </div>
                   )}
 
-                  <Button
-                    data-testid="run-autopilot-btn"
-                    onClick={handleRunStageAutopilot}
-                    disabled={loading}
-                    className="w-full"
-                  >
-                    {loading ? "Running..." : "Run Autopilot for this Stage"}
-                  </Button>
+                  <div className="grid grid-cols-1 gap-3">
+                    <Button
+                      data-testid="run-autopilot-btn"
+                      onClick={handleRunStageAutopilot}
+                      disabled={loading}
+                      variant="outline"
+                      className="w-full"
+                    >
+                      {loading ? "Running..." : "Run Autopilot for this Stage"}
+                    </Button>
+
+                    <Button
+                      data-testid="run-production-mode-btn"
+                      onClick={handleRunProductionMode}
+                      disabled={loading}
+                      className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                    >
+                      <Rocket className="w-4 h-4 mr-2" />
+                      {loading ? "Generating..." : "Run FULL Autopilot (Production Mode)"}
+                    </Button>
+                  </div>
 
                   {stageOutput && (
                     <div className="mt-4">
-                      <h4 className="font-medium text-sm text-slate-700 mb-2">Output:</h4>
+                      <h4 className="font-medium text-sm text-slate-700 mb-2">Strategic Output:</h4>
                       <ScrollArea className="h-96 w-full rounded-md border bg-slate-50 p-4">
                         <pre className="text-xs text-slate-700 whitespace-pre-wrap font-mono">{stageOutput}</pre>
+                      </ScrollArea>
+                    </div>
+                  )}
+
+                  {productionOutput && (
+                    <div className="mt-4">
+                      <h4 className="font-medium text-sm text-slate-700 mb-2">🚀 Production Package (Ready to Deploy):</h4>
+                      <ScrollArea className="h-96 w-full rounded-md border bg-blue-50 p-4">
+                        <pre className="text-xs text-slate-700 whitespace-pre-wrap font-mono">{productionOutput}</pre>
                       </ScrollArea>
                     </div>
                   )}
