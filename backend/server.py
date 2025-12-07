@@ -447,6 +447,124 @@ Summarize the last 2-4 snapshots to provide a weekly-style status update.
         "output": response
     }
 
+@api_router.post("/seo/production-mode")
+async def run_production_mode(input: ProductionModeRequest):
+    website = await db.websites.find_one({"id": input.website_id}, {"_id": 0})
+    
+    if not website:
+        raise HTTPException(status_code=404, detail="Website not found")
+    
+    stage_info = STAGES.get(website['current_stage'], STAGES[1])
+    
+    chat = await get_seo_brain(website['main_language'])
+    
+    prompt = f"""
+## TRIGGER: AUTOPILOT PRODUCTION MODE (Full Automation Output)
+
+### ACTIVE WEBSITE PROFILE:
+- Name: {website['name']}
+- Domain: {website['domain']}
+- Main Language: {website['main_language']}
+- Target Country/Market: {website['target_country']}
+- Business Type: {website['business_type']}
+- Main Goals: {website['main_goals']}
+- Primary Services/Offers: {', '.join(website['primary_services'])}
+- Site Age: {website.get('site_age', 'Not specified')}
+
+### CURRENT STAGE:
+- Stage {website['current_stage']}: {stage_info['name']}
+- Focus: {stage_info['description']}
+
+---
+
+**GOAL:**
+Automatically generate ALL publish-ready SEO assets for the current STAGE with no manual planning required.
+
+**OUTPUT FORMAT (STRICT):**
+
+## ✅ AUTOPILOT PRODUCTION PACKAGE
+
+### 1. READY-TO-PUBLISH PAGE BLOCKS (1–3 pages)
+For each page:
+- Page Name
+- Target Keyword
+- URL Slug
+- FULL HTML STRUCTURE:
+  - <title>
+  - <meta description>
+  - <h1>
+  - 4–6 <h2>
+  - Full SEO-optimized body text (700–1200 words)
+  - Call-to-action block at the end
+
+All text must be FINAL COPY, not placeholders.
+
+---
+
+### 2. SCHEMA MARKUP (JSON-LD)
+For each generated page:
+- Provide valid Schema.org JSON-LD in `json` block
+- Use:
+  - WebPage
+  - Service
+  - FAQPage (if applicable)
+
+---
+
+### 3. INTERNAL LINKING MAP
+- A table:
+  - From Page → To Page → Anchor Text
+
+---
+
+### 4. WEEKLY AUTOPILOT DEPLOYMENT PLAN
+- Day 1: What to publish
+- Day 3: What to update
+- Day 5: What to interlink
+- Day 7: What to review
+
+---
+
+### 5. RANKING EXPECTATION (ESTIMATE)
+- What keyword groups may start moving in:
+  - 30 days
+  - 60 days
+  - 90 days
+
+**DISCLAIMER:** Clearly mark as ESTIMATE only.
+
+**RULES:**
+- Everything must be COPY–PASTE READY.
+- NO placeholders.
+- NO generic advice.
+- NO "you should consider."
+- Assume the user wants to deploy this immediately.
+- Write in {website['main_language']} language.
+"""
+    
+    user_message = UserMessage(text=prompt)
+    response = await chat.send_message(user_message)
+    
+    summary = f"Production Mode: Complete ready-to-publish SEO package for Stage {website['current_stage']} ({stage_info['name']})"
+    
+    snapshot_dict = {
+        "website_id": input.website_id,
+        "snapshot_type": "Autopilot Production Package",
+        "summary": summary,
+        "full_output": response
+    }
+    snapshot_obj = Snapshot(**snapshot_dict)
+    
+    doc = snapshot_obj.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    
+    await db.snapshots.insert_one(doc)
+    
+    return {
+        "snapshot": snapshot_obj,
+        "output": response
+    }
+
 @api_router.get("/stages")
 async def get_stages():
     return STAGES
