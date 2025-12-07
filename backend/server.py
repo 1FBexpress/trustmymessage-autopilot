@@ -553,7 +553,7 @@ After generating all content above, provide exact file-writing instructions:
 ## 🔧 FILE UPDATE PLAN
 
 For each page generated:
-- **File Path:** Full path (e.g., `/app/frontend/public/index.html`)
+- **File Path:** Full path starting with `/app/frontend/public/` (e.g., `/app/frontend/public/index.html`)
 - **Action:** CREATE or OVERWRITE
 - **Content:** Full HTML document in a code block with language hint (```html)
 
@@ -567,7 +567,8 @@ RULES for FILE UPDATE PLAN:
 - Include all DOCTYPE, head, and body tags
 - Inject JSON-LD schema into each page's <head>
 - Include internal links in the HTML where specified
-- All paths must be absolute from project root
+- All paths must start with /app/frontend/public/
+- System will automatically route to correct website subfolder ({website['domain']})
 - Every file must be ready to write without modification
 """
     
