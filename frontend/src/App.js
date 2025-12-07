@@ -301,7 +301,7 @@ function App() {
   };
 
   const handleApplyProductionPackage = async (snapshotId) => {
-    if (!confirm("This will update your website files. Are you sure you want to continue?")) {
+    if (!confirm("This will update your website files and commit to GitHub. Are you sure?")) {
       return;
     }
 
@@ -312,10 +312,31 @@ function App() {
         snapshot_id: snapshotId
       });
 
-      toast.success(`Applied ${response.data.applied_files.length} file updates successfully!`);
-      
-      if (response.data.errors.length > 0) {
-        toast.error(`${response.data.errors.length} files failed to update`);
+      const { applied_files, errors, git_status, stage, auto_deploy } = response.data;
+
+      // Show success message
+      if (applied_files.length > 0 && errors.length === 0) {
+        if (auto_deploy) {
+          toast.success(
+            `✅ SEO Autopilot Action Complete!\n\n` +
+            `Stage ${stage}: ${applied_files.length} files written, committed to GitHub.\n` +
+            `Auto-deploy is running via Vercel. Walk away. 🚀`,
+            { duration: 8000 }
+          );
+        } else if (git_status.committed) {
+          toast.success(
+            `Files updated and committed to GitHub.\n` +
+            `Push may require manual action: ${git_status.error || 'Unknown error'}`,
+            { duration: 6000 }
+          );
+        } else {
+          toast.success(`Applied ${applied_files.length} file updates successfully!`);
+          if (git_status.error) {
+            toast.error(`Git error: ${git_status.error}`);
+          }
+        }
+      } else if (errors.length > 0) {
+        toast.error(`${errors.length} files failed to update`);
       }
     } catch (error) {
       console.error("Error applying production package:", error);
