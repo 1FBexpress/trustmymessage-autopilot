@@ -594,6 +594,92 @@ RULES for FILE UPDATE PLAN:
         "output": response
     }
 
+@api_router.post("/seo/apply-production-package")
+async def apply_production_package(input: ApplyProductionPackageRequest):
+    """
+    Parse the production package output and automatically apply file updates
+    """
+    import re
+    import os as os_module
+    from pathlib import Path as PathLib
+    
+    # Get the snapshot
+    snapshot = await db.snapshots.find_one({"id": input.snapshot_id}, {"_id": 0})
+    
+    if not snapshot:
+        raise HTTPException(status_code=404, detail="Snapshot not found")
+    
+    if snapshot['snapshot_type'] != "Autopilot Production Package":
+        raise HTTPException(status_code=400, detail="This snapshot is not a production package")
+    
+    output = snapshot['full_output']
+    
+    # Parse the FILE UPDATE PLAN section
+    file_plan_match = re.search(r'## 🔧 FILE UPDATE PLAN(.*?)(?=\n##|\Z)', output, re.DOTALL)
+    
+    if not file_plan_match:
+        raise HTTPException(status_code=400, detail="No FILE UPDATE PLAN found in production package")
+    
+    file_plan = file_plan_match.group(1)
+    
+    # Extract file operations using regex
+    file_operations = []
+    
+    # Pattern to match file blocks
+    file_pattern = r'\*\*File Path:\*\*\s*`?([^\n`]+)`?\s*\n\*\*Action:\*\*\s*(\w+)\s*\n\*\*Content:\*\*\s*\n```(\w+)?\n(.*?)```'
+    
+    for match in re.finditer(file_pattern, file_plan, re.DOTALL):
+        file_path = match.group(1).strip()
+        action = match.group(2).strip().upper()
+        language = match.group(3) or 'html'
+        content = match.group(4).strip()
+        
+        file_operations.append({
+            'path': file_path,
+            'action': action,
+            'language': language,
+            'content': content
+        })
+    
+    if not file_operations:
+        raise HTTPException(status_code=400, detail="No file operations found in FILE UPDATE PLAN")
+    
+    # Apply file operations
+    applied_files = []
+    errors = []
+    
+    for operation in file_operations:
+        try:
+            file_path = operation['path']
+            
+            # Create directory if it doesn't exist
+            dir_path = os_module.path.dirname(file_path)
+            if dir_path and not os_module.path.exists(dir_path):
+                os_module.makedirs(dir_path, exist_ok=True)
+            
+            # Write the file
+            with open(file_path, 'w', encoding='utf-8') as f:
+                f.write(operation['content'])
+            
+            applied_files.append({
+                'path': file_path,
+                'action': operation['action'],
+                'status': 'success'
+            })
+            
+        except Exception as e:
+            errors.append({
+                'path': operation.get('path', 'unknown'),
+                'error': str(e)
+            })
+    
+    return {
+        "message": f"Applied {len(applied_files)} file operations",
+        "applied_files": applied_files,
+        "errors": errors,
+        "total_operations": len(file_operations)
+    }
+
 @api_router.get("/stages")
 async def get_stages():
     return STAGES
