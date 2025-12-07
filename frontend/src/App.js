@@ -26,6 +26,7 @@ function App() {
   const [stageOutput, setStageOutput] = useState("");
   const [pageOutput, setPageOutput] = useState("");
   const [reportOutput, setReportOutput] = useState("");
+  const [productionOutput, setProductionOutput] = useState("");
 
   // Website form states
   const [websiteFormOpen, setWebsiteFormOpen] = useState(false);
