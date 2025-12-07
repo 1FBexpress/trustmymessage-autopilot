@@ -275,6 +275,31 @@ function App() {
     }
   };
 
+  const handleRunProductionMode = async () => {
+    if (!activeWebsiteId) {
+      toast.error("Please select a website first");
+      return;
+    }
+
+    setLoading(true);
+    setProductionOutput("");
+
+    try {
+      const response = await axios.post(`${API}/seo/production-mode`, {
+        website_id: activeWebsiteId
+      });
+
+      setProductionOutput(response.data.output);
+      await fetchSnapshots();
+      toast.success("Production package generated successfully!");
+    } catch (error) {
+      console.error("Error running production mode:", error);
+      toast.error("Failed to generate production package");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const currentStage = activeWebsite ? stages[activeWebsite.current_stage] : null;
 
   return (
