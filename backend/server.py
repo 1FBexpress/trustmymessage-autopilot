@@ -601,6 +601,7 @@ async def apply_production_package(input: ApplyProductionPackageRequest):
     """
     import re
     import os as os_module
+    import subprocess
     from pathlib import Path as PathLib
     
     # Get the snapshot
@@ -611,6 +612,10 @@ async def apply_production_package(input: ApplyProductionPackageRequest):
     
     if snapshot['snapshot_type'] != "Autopilot Production Package":
         raise HTTPException(status_code=400, detail="This snapshot is not a production package")
+    
+    # Get website to find current stage
+    website = await db.websites.find_one({"id": snapshot['website_id']}, {"_id": 0})
+    current_stage = website.get('current_stage', 1) if website else 1
     
     output = snapshot['full_output']
     
@@ -673,11 +678,71 @@ async def apply_production_package(input: ApplyProductionPackageRequest):
                 'error': str(e)
             })
     
+    # Automatic Git commit and push
+    git_status = {
+        "committed": False,
+        "pushed": False,
+        "message": "",
+        "error": None
+    }
+    
+    if applied_files and not errors:
+        try:
+            # Change to project directory
+            project_dir = "/app"
+            
+            # Git add all changed files
+            subprocess.run(
+                ["git", "add", "."],
+                cwd=project_dir,
+                check=True,
+                capture_output=True,
+                text=True
+            )
+            
+            # Git commit
+            commit_message = f"SEO Autopilot: Stage {current_stage} completed. Auto-deploy initiated."
+            commit_result = subprocess.run(
+                ["git", "commit", "-m", commit_message],
+                cwd=project_dir,
+                capture_output=True,
+                text=True
+            )
+            
+            if commit_result.returncode == 0:
+                git_status["committed"] = True
+                git_status["message"] = commit_message
+                
+                # Git push to main branch
+                push_result = subprocess.run(
+                    ["git", "push", "origin", "main"],
+                    cwd=project_dir,
+                    capture_output=True,
+                    text=True
+                )
+                
+                if push_result.returncode == 0:
+                    git_status["pushed"] = True
+                else:
+                    git_status["error"] = push_result.stderr
+            else:
+                # Check if there were no changes to commit
+                if "nothing to commit" in commit_result.stdout:
+                    git_status["message"] = "No changes to commit"
+                else:
+                    git_status["error"] = commit_result.stderr
+                    
+        except Exception as e:
+            git_status["error"] = str(e)
+    
     return {
         "message": f"Applied {len(applied_files)} file operations",
         "applied_files": applied_files,
         "errors": errors,
-        "total_operations": len(file_operations)
+        "total_operations": len(file_operations),
+        "git_status": git_status,
+        "stage": current_stage,
+        "auto_deploy": git_status["pushed"]
     }
 
 @api_router.get("/stages")
