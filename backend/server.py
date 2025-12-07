@@ -90,24 +90,23 @@ async def analyze_message(request: AnalyzeRequest):
     """
     try:
         # Get API key from environment
-        api_key = os.environ.get('EMERGENT_LLM_KEY')
+        api_key = os.environ.get('OPENAI_API_KEY')
         if not api_key:
-            raise HTTPException(status_code=500, detail="API key not configured")
+            raise HTTPException(status_code=500, detail="OpenAI API key not configured")
         
         # Ensure imageBase64 has proper format
         image_url = request.imageBase64
         if not image_url.startswith('data:image'):
             image_url = f"data:image/png;base64,{image_url}"
         
-        # Create OpenAI client with Emergent proxy URL
+        # Create OpenAI client
         client = AsyncOpenAI(
-            api_key=api_key,
-            base_url="https://integrations.emergentagent.com/llm"
+            api_key=api_key
         )
         
-        # Call OpenAI API with vision
+        # Call OpenAI GPT-4o (latest vision model) API
         response = await client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-4o",
             temperature=0.2,
             messages=[
                 {
