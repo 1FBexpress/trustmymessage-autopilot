@@ -180,6 +180,8 @@ const Startsida = () => {
           </Link>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 };
