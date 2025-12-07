@@ -93,6 +93,10 @@ class ReportRequest(BaseModel):
 
 class ProductionModeRequest(BaseModel):
     website_id: str
+    auto_apply: bool = False
+
+class ApplyProductionPackageRequest(BaseModel):
+    snapshot_id: str
 
 # Stage definitions
 STAGES = {
