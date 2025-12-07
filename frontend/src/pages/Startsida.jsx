@@ -1,10 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Shield, CheckCircle, AlertTriangle, ArrowRight, Upload } from 'lucide-react';
+import Navigation from '../components/Navigation';
+import Footer from '../components/Footer';
 
 const Startsida = () => {
   return (
     <div className="min-h-screen" style={{ background: '#0F172A' }}>
+      <Navigation />
+      
       {/* Hero Section */}
       <section className="hero-section">
         <div className="hero-content relative z-10">
