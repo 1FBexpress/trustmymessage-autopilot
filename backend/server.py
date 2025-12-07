@@ -91,6 +91,9 @@ class PageOptimizationRequest(BaseModel):
 class ReportRequest(BaseModel):
     website_id: str
 
+class ProductionModeRequest(BaseModel):
+    website_id: str
+
 # Stage definitions
 STAGES = {
     1: {
